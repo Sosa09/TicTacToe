@@ -15,15 +15,22 @@ namespace TicTacToe
         const int TOTAL_GRID_ROW = 4;
         const int TOTAL_GRID_COL = 4;
         const int PLAYER_CHAR = 7;
-        const int AI_CHAR = ;
+        const int AI_CHAR = 6;
+        static bool isPlayerTurn = true;
 
         public static void Main(string[] args)
         {
             _inistGameSession();
+
             while (true)
             {
                 string row = Console.ReadLine();
                 string col = Console.ReadLine();
+                //create a method to interchange the game turn
+                if (isPlayerTurn)
+                    grid[int.Parse(row), int.Parse(col)] = PLAYER_CHAR;
+
+                UIExperience.DesignGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
 
 
             }
@@ -39,15 +46,14 @@ namespace TicTacToe
 
             gamer = DataHandler.InitializePlayer(Console.ReadLine()); //Request user name
 
-            UIExperience.DesignGrid(_refreshGameGrid(grid)); //initializing new game grid
+            UIExperience.DesignGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
 
 
         }
 
         private static string _refreshGameGrid(int row, int col)
         {
-            if (isPlayerTurn)
-                grid[row, col] = 8;
+
             string header = "";
             for (int i = 0; i < grid.GetLength(0); i++)
             {
@@ -57,7 +63,7 @@ namespace TicTacToe
 
      
                     int value = grid[i, j];
-                    if (value == 0 || i == 0 && j == 0)
+                    if (value == 0 || i == 0 && j == 0) //value 0 represents empyt aand returns a space, i and j are the indexes while the indexes are 0 place a spece to create a gapen between the row and header
                         header += "  ";
                     else
                     {
@@ -68,7 +74,7 @@ namespace TicTacToe
 
                 header += "\n";
             }
-
+            
             return header;
         }
 
