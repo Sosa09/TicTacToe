@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Channels;
 
 namespace TicTacToe
 {
@@ -10,27 +12,42 @@ namespace TicTacToe
     {
         static Gamer gamer;
         static int[,] grid;
+        const int TOTAL_GRID_ROW = 4;
+        const int TOTAL_GRID_COL = 4;
+        const int PLAYER_CHAR = 7;
+        const int AI_CHAR = ;
 
         public static void Main(string[] args)
         {
-            grid = _initGrid(4, 4);
+            _inistGameSession();
+            while (true)
+            {
+                string row = Console.ReadLine();
+                string col = Console.ReadLine();
 
-            UIExperience.InitializationInterface();
-            gamer = DataHandler.InitializePlayer(Console.ReadLine());
-            UIExperience.DesignGrid(_refreshGameGrid(grid));
 
-            var input = Console.ReadLine();
-            var ab = input.Split(',');
-
-            grid[int.Parse(ab[0]), int.Parse(ab[1])] = 8;
-            UIExperience.DesignGrid(_refreshGameGrid(grid));
-
+            }
 
 
         }
 
-        private static string _refreshGameGrid(int[,] grid)
+        private static void  _inistGameSession()
         {
+            grid = _initGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL);
+
+            UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
+
+            gamer = DataHandler.InitializePlayer(Console.ReadLine()); //Request user name
+
+            UIExperience.DesignGrid(_refreshGameGrid(grid)); //initializing new game grid
+
+
+        }
+
+        private static string _refreshGameGrid(int row, int col)
+        {
+            if (isPlayerTurn)
+                grid[row, col] = 8;
             string header = "";
             for (int i = 0; i < grid.GetLength(0); i++)
             {
