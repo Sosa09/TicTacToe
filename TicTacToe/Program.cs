@@ -24,7 +24,10 @@ namespace TicTacToe
 
             while (true)
             {
+                Console.WriteLine("Enter the nr of row in which you want to insert you char");
                 string row = Console.ReadLine();
+                Console.WriteLine("Enter the nr of row in which you want to insert you char");
+
                 string col = Console.ReadLine();
                 //create a method to interchange the game turn
                 if (isPlayerTurn)
