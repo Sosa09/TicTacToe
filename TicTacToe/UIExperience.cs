@@ -33,12 +33,12 @@ namespace TicTacToe
                     "let's say you want to pla ce your char on the middeltop so you start with row 1 press enter then column 2 ");
         }
         private static void DisplayGamerInfo()
-        { 
+        {
             Console.WriteLine($"Hello: ");
         }
-        public static void DesignGrid(string Headers)
+        public static void DesignGameGrid(string Headers)
         {
-            
+
             Console.Write(Headers);
             Console.WriteLine();
 
@@ -47,13 +47,33 @@ namespace TicTacToe
 
         public static void RefreshInterface()
         {
-         
+
             DisplayGamerInfo();
 
 
         }
 
-       
 
+
+        //NOTE FOR ALEX IS THIS CINSDERED LOGIC ?
+        public static int[] PlayerPoistionChoice()
+        {
+            int[] playerChoice = new int[2];
+            Console.WriteLine("Enter the nr of row in which you want to insert you char");
+            string row = Console.ReadLine();
+
+            Console.WriteLine("Enter the nr of row in which you want to insert you char");
+            string col = Console.ReadLine();
+
+            if(!int.TryParse(row, out int i) || !int.TryParse(col, out int n))
+            { 
+                Console.WriteLine("all fields should have a must be from type integer, try again");
+                PlayerPoistionChoice();
+            }
+            playerChoice[0] = (int.Parse(row));
+            playerChoice[1] = (int.Parse(col));
+            return playerChoice;
+
+        }
     }
 }

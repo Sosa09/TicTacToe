@@ -8,7 +8,7 @@ namespace TicTacToe
 {
     public static class DataHandler
     {
-
+        static List<Gamer> gamers = new List<Gamer>();
         /// <summary>
         /// Will initialize player instance with his name
         /// points set to 0
@@ -16,14 +16,14 @@ namespace TicTacToe
         /// totallosses to 0
         /// </summary>
         /// <param name="playerName">represents the player name</param>
-        public static Gamer InitializePlayer(string playerName)
+        public static void InitializePlayer(string playerName)
         {
-            return new Gamer { 
+            gamers.Add(new Gamer { 
                 Name = playerName, 
                 Points = 0, 
                 TotalLosses = 0, 
                 TotalWins = 0 
-            };
+            });
         }
 
         /// <summary>

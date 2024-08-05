@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Channels;
@@ -10,46 +12,59 @@ namespace TicTacToe
     /// </summary>
     public class Program
     {
-        static Gamer gamer;
-        static int[,] grid;
+        static Gamer _gamer;
+        static int[,] _grid;
         const int TOTAL_GRID_ROW = 4;
         const int TOTAL_GRID_COL = 4;
         const int PLAYER_CHAR = 7;
         const int AI_CHAR = 6;
-        static bool isPlayerTurn = true;
+        const int BOX_EMPTY_VLAUE = 0;
+        const string GAP = " ";
+        static bool _isPlayerTurn = true;
+
+        //TODO: 
+        static Dictionary<string, string> _positionsList = new Dictionary<string, string>();
+        static string[] _positions = { "TOP-LEFT", "TOP", "TOP-RIGHT", "MIDDLE-LEFT", "MIDDLE", "MIDDLE-RIGHT", "BOTTOM-LEFT", "BOTTOM, BOTTOM-RIGHT" };
 
         public static void Main(string[] args)
         {
-            _inistGameSession();
-
+            _initGameSession();
+      
             while (true)
             {
-                Console.WriteLine("Enter the nr of row in which you want to insert you char");
-                string row = Console.ReadLine();
-                Console.WriteLine("Enter the nr of row in which you want to insert you char");
-
-                string col = Console.ReadLine();
-                //create a method to interchange the game turn
-                if (isPlayerTurn)
-                    grid[int.Parse(row), int.Parse(col)] = PLAYER_CHAR;
-
-                UIExperience.DesignGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
 
 
+                //UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
+                _defineGridPosition();
             }
-
-
         }
 
-        private static void  _inistGameSession()
+        private static void _defineGridPosition()
         {
-            grid = _initGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL);
+            var playerPoistion = UIExperience.PlayerPoistionChoice();
+            //create a method to interchange the game turn
+            if (_isPlayerTurn)
+            {
+                _grid[playerPoistion[0], playerPoistion[1]] = PLAYER_CHAR;
+                _isPlayerTurn = false;
+            }
+            else
+            {
+                _grid[playerPoistion[0], playerPoistion[1]] = AI_CHAR;
+                _isPlayerTurn = true;
+
+            }
+        }
+
+        private static void  _initGameSession()
+        {
+            _grid = _initGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL);
 
             UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
 
-            gamer = DataHandler.InitializePlayer(Console.ReadLine()); //Request user name
+            _gamer = DataHandler.InitializePlayer(Console.ReadLine()); //Request user name
 
-            UIExperience.DesignGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
+            UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
 
 
         }
@@ -58,16 +73,16 @@ namespace TicTacToe
         {
 
             string header = "";
-            for (int i = 0; i < grid.GetLength(0); i++)
+            for (int i = 0; i < _grid.GetLength(0); i++)
             {
 
-                for(int j = 0; j < grid.GetLength(1); j++)
+                for(int j = 0; j < _grid.GetLength(1); j++)
                 {
 
-     
-                    int value = grid[i, j];
-                    if (value == 0 || i == 0 && j == 0) //value 0 represents empyt aand returns a space, i and j are the indexes while the indexes are 0 place a spece to create a gapen between the row and header
-                        header += "  ";
+            
+                    int value = _grid[i, j];
+                    if (value == BOX_EMPTY_VLAUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
+                        header += GAP;
                     else
                     {
                         header += $"{value} ";
@@ -81,7 +96,17 @@ namespace TicTacToe
             return header;
         }
 
-        private static int[,] _initGrid(int rows, int cols) 
+        /// <summary>
+        /// _initGrid is called on game initialization it defines the grid row and col
+        /// </summary>
+        /// <param name="rows">Takes an niterger to define the nr to rows the grid should have</param>
+        /// <param name="cols">Takes an niterger to define the nr to rows the grid should have</param>
+        /// <returns>
+        /// returns a int array of int[4,4] and assign headers
+        /// _initGrid(4,4); 
+        /// THE GRID 1 2 3 header rows and colunn rows
+        /// </returns>
+        private static int[,] _initGameGrid(int rows, int cols) 
         {
             int[,] tempGrid = new int[rows, cols];
             //TODO: change 2 the a meaningful variable like representing headers row and columns
