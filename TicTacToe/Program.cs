@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Channels;
 
@@ -16,15 +17,13 @@ namespace TicTacToe
         static int[,] _grid;
         const int TOTAL_GRID_ROW = 4;
         const int TOTAL_GRID_COL = 4;
-        const int PLAYER_CHAR = 7;
-        const int AI_CHAR = 6;
-        const int BOX_EMPTY_VLAUE = 0;
+        const int PLAYER_CHAR = 5;
+        const int AI_CHAR = 7;
+        const int AI_INDEX = 0;
+        const int PLAYER_INDEX = 1;
+        const int BOX_EMPTY_VALUE = 0;
         const string GAP = " ";
-        static bool _isPlayerTurn = true;
 
-        //TODO: 
-        static Dictionary<string, string> _positionsList = new Dictionary<string, string>();
-        static string[] _positions = { "TOP-LEFT", "TOP", "TOP-RIGHT", "MIDDLE-LEFT", "MIDDLE", "MIDDLE-RIGHT", "BOTTOM-LEFT", "BOTTOM, BOTTOM-RIGHT" };
 
         public static void Main(string[] args)
         {
@@ -32,67 +31,86 @@ namespace TicTacToe
       
             while (true)
             {
+         
 
-
-                //UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
                 _defineGridPosition();
+
+       
             }
         }
 
-        private static void _defineGridPosition()
-        {
-            var playerPoistion = UIExperience.PlayerPoistionChoice();
-            //create a method to interchange the game turn
-            if (_isPlayerTurn)
-            {
-                _grid[playerPoistion[0], playerPoistion[1]] = PLAYER_CHAR;
-                _isPlayerTurn = false;
-            }
-            else
-            {
-                _grid[playerPoistion[0], playerPoistion[1]] = AI_CHAR;
-                _isPlayerTurn = true;
-
-            }
-        }
-
-        private static void  _initGameSession()
+        private static void _initGameSession()
         {
             _grid = _initGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL);
 
             UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
 
-            _gamer = DataHandler.InitializePlayer(Console.ReadLine()); //Request user name
+            GamerHandler.InitializePlayer("AI", AI_CHAR);
+            GamerHandler.InitializePlayer(Console.ReadLine(), PLAYER_CHAR);
 
-            UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
+            UIExperience.DesignGameGrid(_refreshGameGrid()); //initializing new game grid
+
+            //Player can start over compuyter
+            _gamer = GamerHandler.Gamers[PLAYER_INDEX];
 
 
         }
 
-        private static string _refreshGameGrid(int row, int col)
+        //TODO get rid of if else and check only at the end if is player turn 
+        //chang CHAR or ASSIGN char to the selected player
+        private static void _defineGridPosition()
         {
+            var playerPoistion = UIExperience.PlayerPoistionChoice();
 
-            string header = "";
-            for (int i = 0; i < _grid.GetLength(0); i++)
+            _grid[playerPoistion[0], playerPoistion[1]] = _gamer.PlayerChar;
+            _refreshGameGrid(playerPoistion[0], playerPoistion[1]);
+            _switchPlayerTurn();
+
+            UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
+        }
+
+        private static void _switchPlayerTurn() 
+        { 
+            if(_gamer == GamerHandler.Gamers[AI_INDEX])
             {
+                _gamer = GamerHandler.Gamers[PLAYER_INDEX];
+            }
+            else
+            {
+                _gamer = GamerHandler.Gamers[AI_INDEX];
+            }
+        }
 
-                for(int j = 0; j < _grid.GetLength(1); j++)
+
+        private static string _refreshGameGrid()
+        {
+            bool passed = true;
+            string header = "";
+            while (passed)
+            {
+             
+                for (int i = 0; i < _grid.GetLength(0); i++)
                 {
 
-            
-                    int value = _grid[i, j];
-                    if (value == BOX_EMPTY_VLAUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
-                        header += GAP;
-                    else
+                    for (int j = 0; j < _grid.GetLength(1); j++)
                     {
-                        header += $"{value} ";
+
+
+                        int value = _grid[i, j];
+                        if (value == BOX_EMPTY_VALUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
+                            header += GAP;
+                        else
+                        {
+                            header += $"{value} ";
+                        }
+
                     }
-                   
+
+                    header += "\n";
                 }
 
-                header += "\n";
             }
-            
+
             return header;
         }
 

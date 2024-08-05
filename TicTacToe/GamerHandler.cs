@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
-    public static class DataHandler
+    public static class GamerHandler
     {
-        static List<Gamer> gamers = new List<Gamer>();
+        public static List<Gamer> Gamers = new List<Gamer>();
         /// <summary>
         /// Will initialize player instance with his name
         /// points set to 0
@@ -16,13 +16,14 @@ namespace TicTacToe
         /// totallosses to 0
         /// </summary>
         /// <param name="playerName">represents the player name</param>
-        public static void InitializePlayer(string playerName)
+        public static void InitializePlayer(string playerName, int playerChar )
         {
-            gamers.Add(new Gamer { 
+            Gamers.Add(new Gamer { 
                 Name = playerName, 
                 Points = 0, 
                 TotalLosses = 0, 
-                TotalWins = 0 
+                TotalWins = 0,
+                PlayerChar = playerChar
             });
         }
 

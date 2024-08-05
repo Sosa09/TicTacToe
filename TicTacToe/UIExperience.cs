@@ -32,9 +32,14 @@ namespace TicTacToe
                     "3" +
                     "let's say you want to pla ce your char on the middeltop so you start with row 1 press enter then column 2 ");
         }
-        private static void DisplayGamerInfo()
+        private static void DisplayGamerInfo(string playerName)
         {
-            Console.WriteLine($"Hello: ");
+            Console.WriteLine($"Hello: {playerName}");
+        }
+
+        private static void DisplayCurrentTurnPlayer(string playerName)
+        {
+            Console.WriteLine($"Your turn: {playerName}");
         }
         public static void DesignGameGrid(string Headers)
         {
@@ -45,10 +50,10 @@ namespace TicTacToe
 
         }
 
-        public static void RefreshInterface()
+        public static void RefreshInterface(Gamer gamer)
         {
 
-            DisplayGamerInfo();
+            DisplayGamerInfo(gamer.Name);
 
 
         }
@@ -62,7 +67,7 @@ namespace TicTacToe
             Console.WriteLine("Enter the nr of row in which you want to insert you char");
             string row = Console.ReadLine();
 
-            Console.WriteLine("Enter the nr of row in which you want to insert you char");
+            Console.WriteLine("Enter the nr of col in which you want to insert you char");
             string col = Console.ReadLine();
 
             if(!int.TryParse(row, out int i) || !int.TryParse(col, out int n))

@@ -12,5 +12,6 @@ namespace TicTacToe
         public int Points { get; set; }
         public int TotalWins { get; set; }
         public int TotalLosses { get; set; }
+        public int PlayerChar { get; set; }
     }
 }
