@@ -31,6 +31,11 @@ namespace TicTacToe
             while(true)
             {
                 _defineGridPosition();
+
+                _refreshGameGrid();
+                
+                UIExperience.DesignGameGrid(_refreshGameGrid()); //initializing new game grid
+
                 _switchPlayerTurn();
             }
 
@@ -77,8 +82,7 @@ namespace TicTacToe
             
             _grid[playerPosition[0], playerPosition[1]] = _gamer.PlayerChar;
 
-            _refreshGameGrid();
-            UIExperience.DesignGameGrid(_refreshGameGrid()); //initializing new game grid
+
         }
 
         private static void _switchPlayerTurn() 
@@ -92,7 +96,7 @@ namespace TicTacToe
                 _gamer = GamerHandler.Gamers[AI_INDEX];
             }
 
-
+            UIExperience.DisplayCurrentTurnPlayer(_gamer.Name);
         }
 
         private static bool _cellNotEmpty(int row, int col)

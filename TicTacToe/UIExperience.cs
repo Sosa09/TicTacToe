@@ -37,7 +37,7 @@ namespace TicTacToe
             Console.WriteLine($"Hello: {playerName}");
         }
 
-        private static void DisplayCurrentTurnPlayer(string playerName)
+        public static void DisplayCurrentTurnPlayer(string playerName)
         {
             Console.WriteLine($"Your turn: {playerName}");
         }
