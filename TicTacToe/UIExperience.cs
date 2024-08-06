@@ -52,13 +52,13 @@ namespace TicTacToe
 
         public static void RefreshInterface(Gamer gamer)
         {
-
+            Console.Clear();
             DisplayGamerInfo(gamer.Name);
 
 
         }
 
-
+        
 
         //NOTE FOR ALEX IS THIS CINSDERED LOGIC ?
         public static int[] PlayerPoistionChoice()
@@ -79,6 +79,11 @@ namespace TicTacToe
             playerChoice[1] = (int.Parse(col));
             return playerChoice;
 
+        }
+
+        public static void DisplayCellNotEmptyMessage(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }

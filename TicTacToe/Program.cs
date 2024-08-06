@@ -28,15 +28,12 @@ namespace TicTacToe
         public static void Main(string[] args)
         {
             _initGameSession();
-      
-            while (true)
+            while(true)
             {
-         
-
                 _defineGridPosition();
-
-       
+                _switchPlayerTurn();
             }
+
         }
 
         private static void _initGameSession()
@@ -52,21 +49,36 @@ namespace TicTacToe
 
             //Player can start over compuyter
             _gamer = GamerHandler.Gamers[PLAYER_INDEX];
+            
 
 
         }
+
+
 
         //TODO get rid of if else and check only at the end if is player turn 
         //chang CHAR or ASSIGN char to the selected player
         private static void _defineGridPosition()
         {
-            var playerPoistion = UIExperience.PlayerPoistionChoice();
+            bool isEmpty = true;
+            var playerPosition = UIExperience.PlayerPoistionChoice();
+            while (isEmpty)
+            {
+                
+                isEmpty = _cellNotEmpty(playerPosition[0], playerPosition[1]);
+                if (isEmpty)
+                {
+                    UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}");
+                    playerPosition = UIExperience.PlayerPoistionChoice();
+                }
+             
 
-            _grid[playerPoistion[0], playerPoistion[1]] = _gamer.PlayerChar;
-            _refreshGameGrid(playerPoistion[0], playerPoistion[1]);
-            _switchPlayerTurn();
+            }
+            
+            _grid[playerPosition[0], playerPosition[1]] = _gamer.PlayerChar;
 
-            UIExperience.DesignGameGrid(_refreshGameGrid(TOTAL_GRID_ROW, TOTAL_GRID_COL)); //initializing new game grid
+            _refreshGameGrid();
+            UIExperience.DesignGameGrid(_refreshGameGrid()); //initializing new game grid
         }
 
         private static void _switchPlayerTurn() 
@@ -79,24 +91,28 @@ namespace TicTacToe
             {
                 _gamer = GamerHandler.Gamers[AI_INDEX];
             }
+
+
         }
 
+        private static bool _cellNotEmpty(int row, int col)
+        {
+            return _grid[row, col] > 0;
+        }
 
         private static string _refreshGameGrid()
         {
+           
             bool passed = true;
             string header = "";
-            while (passed)
-            {
-             
+
                 for (int i = 0; i < _grid.GetLength(0); i++)
                 {
 
                     for (int j = 0; j < _grid.GetLength(1); j++)
                     {
-
-
                         int value = _grid[i, j];
+               
                         if (value == BOX_EMPTY_VALUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
                             header += GAP;
                         else
@@ -109,7 +125,7 @@ namespace TicTacToe
                     header += "\n";
                 }
 
-            }
+            
 
             return header;
         }
