@@ -45,43 +45,67 @@ namespace TicTacToe
             UIExperience.DesignGameGrid(RefreshGameGrid()); //initializing new game grid
 
             //Player can start over compuyter
-            
+            GameLogic.IsPlayerTurn = true;
             
 
 
         }
-
 
 
         //TODO get rid of if else and check only at the end if is player turn 
         //chang CHAR or ASSIGN char to the selected player
         private static void DefineGridPosition()
         {
-            bool isEmpty = true;
+            bool isNotEmpty = true;
             var playerPosition = new int[2];
+            var character = Constant.PLAYER_CHAR;
+
             if (GameLogic.IsPlayerTurn)
-                playerPosition = GameLogic.PlayerTurn();
-            else
-            while (isEmpty)
             {
+                playerPosition = UIExperience.PlayerPoistionChoice();
                 
-                isEmpty = _cellNotEmpty(playerPosition[0], playerPosition[1]);
-                if (isEmpty)
+                while (isNotEmpty)
                 {
-                    UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}");
-                    playerPosition = UIExperience.PlayerPoistionChoice();
+                    isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
+                    if (isNotEmpty)
+                    {
+                        UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}");
+                        playerPosition = UIExperience.PlayerPoistionChoice();
+                    }
+                   
                 }
-             
-
-            }
+                GameLogic.IsPlayerTurn = false;
+            }              
+            else
+            {
+               
+                playerPosition = GameLogic.AITurn();
             
-            _grid[playerPosition[0], playerPosition[1]] = _gamer.PlayerChar;
+                while (isNotEmpty)
+                {
+                    isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
+                    if (isNotEmpty)
+                    {
+                        playerPosition = GameLogic.AITurn();
+                    }
+                }
+                        character = Constant.AI_CHAR;
+                GameLogic.IsPlayerTurn = true;
+            }
 
+
+
+
+
+  
+
+
+            _grid[playerPosition[0], playerPosition[1]] = character;
+   
 
         }
 
-
-        private static bool _cellNotEmpty(int row, int col)
+        private static bool CellNotEmpty(int row, int col)
         {
             return _grid[row, col] > 0;
         }

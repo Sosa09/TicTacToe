@@ -19,9 +19,14 @@ namespace TicTacToe
         }
 
 
-        public static void AITurn()
+        public static int[] AITurn()
         {
+            int[] ai_poistions = new int[2];
             Random random = new Random();
+            ai_poistions[0] = random.Next(1, 4);
+            ai_poistions[1] = random.Next(1, 4);
+            return ai_poistions;
+
         }
 
         public static int[] PlayerTurn()
