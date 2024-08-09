@@ -16,11 +16,11 @@ namespace TicTacToe
 
         public static void InitializationInterface()
         {
-            _gameInstrcution();
+            GameInstrcution();
             Console.WriteLine("Hello Please enter your name to start to play: ");
         }
 
-        private static void _gameInstrcution()
+        private static void GameInstrcution()
         {
             Console.WriteLine("The grid is composed of 3 rows and 3 columns each containing a header from 1 to 3.\n" +
                     "To place yor value in a certan plaace of the grid begin with the row and finalize with the column.\n " +
@@ -50,10 +50,10 @@ namespace TicTacToe
 
         }
 
-        public static void RefreshInterface(Gamer gamer)
+        public static void RefreshInterface()
         {
             Console.Clear();
-            DisplayGamerInfo(gamer.Name);
+
 
 
         }
