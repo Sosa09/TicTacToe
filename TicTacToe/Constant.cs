@@ -18,5 +18,6 @@ namespace TicTacToe
         public const int PLAYER_INDEX = 1;
         public const int BOX_EMPTY_VALUE = 0;
         public const string GAP = " ";
+        public const int FIRST_PLAYABLE_INDEX_GRID = 1;
     }
 }

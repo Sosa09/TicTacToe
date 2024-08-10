@@ -58,7 +58,10 @@ namespace TicTacToe
 
         }
 
-        
+        public static void DisplayWinner(string Winner) 
+        {
+            Console.WriteLine(Winner);
+        }
 
         //NOTE FOR ALEX IS THIS CINSDERED LOGIC ?
         public static int[] PlayerPoistionChoice()

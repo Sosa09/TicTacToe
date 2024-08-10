@@ -37,6 +37,10 @@ namespace TicTacToe
         {
             _grid = InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
 
+
+         
+
+
             UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
 
             GameLogic.InitializePlayer(Constant.AI, Constant.AI_CHAR);
@@ -46,7 +50,7 @@ namespace TicTacToe
 
             //Player can start over compuyter
             GameLogic.IsPlayerTurn = true;
-            
+           
 
 
         }
@@ -69,11 +73,13 @@ namespace TicTacToe
                     isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
                     if (isNotEmpty)
                     {
-                        UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}");
+                        UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}"); //HARDCODED ?
                         playerPosition = UIExperience.PlayerPoistionChoice();
                     }
                    
                 }
+         
+
                 GameLogic.IsPlayerTurn = false;
             }              
             else
@@ -101,7 +107,9 @@ namespace TicTacToe
 
 
             _grid[playerPosition[0], playerPosition[1]] = character;
-   
+            GameLogic.HorizontalWinnerChecker(_grid, playerPosition[0]);
+            GameLogic.VerticalWinnerChecker(_grid, playerPosition[1]);
+
 
         }
 
