@@ -26,10 +26,11 @@ namespace TicTacToe
                     "To place yor value in a certan plaace of the grid begin with the row and finalize with the column.\n " +
                     "FOR EXAMPLE\n" +
 
-                    " 1 2 3" +
-                    "1" +
-                    "2" +
-                    "3" +
+                    "  1 2 3" +
+                    "\n1" +
+                    "\n2" +
+                    "\n3" +
+                    "\n" +
                     "let's say you want to pla ce your char on the middeltop so you start with row 1 press enter then column 2 ");
         }
         private static void DisplayGamerInfo(string playerName)
@@ -53,9 +54,6 @@ namespace TicTacToe
         public static void RefreshInterface()
         {
             Console.Clear();
-
-
-
         }
 
         public static void DisplayWinner(string Winner) 

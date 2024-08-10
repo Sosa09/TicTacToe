@@ -9,6 +9,7 @@ namespace TicTacToe
     public static class GameLogic
     {
         public static bool IsPlayerTurn = true;
+        public static string PlayerName = "";
         /// <summary>
       
         /// </summary>
@@ -37,7 +38,11 @@ namespace TicTacToe
 
         private static void DeclareWinner()
         {
-            UIExperience.DisplayWinner("Winner");
+            if ( !IsPlayerTurn )
+            {
+                PlayerName = "Computer"; 
+            }
+            UIExperience.DisplayWinner(PlayerName);
             Console.ReadKey();
         }
 
@@ -109,6 +114,41 @@ namespace TicTacToe
 
         }
     
-    
+        public static void DiagonalWinnerChecker(int[,] _grid, int playedRow, int playedCol)
+        {
+
+            int value = _grid[playedRow, playedCol];
+            int reverseIndex = 3; //TODO REMOVE MAGIC NUMBER
+            bool isDiagWinner = true;   
+            bool isDiagReverseWinner = true;
+
+            for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < _grid.GetLength(0); i++)
+            {
+                //1,1 and 1,3 not equal then break
+                if (value != _grid[i,i] )
+                {
+                    isDiagWinner = false;  
+               
+                   
+                }
+                if(value != _grid[i, reverseIndex] )
+                {
+                    isDiagReverseWinner = false;
+                    if(!isDiagWinner) //this will help to break if  both left diag and right diag are not equal
+                    {
+                        break;
+                    }
+                }
+
+
+                reverseIndex--;
+            }
+            if (isDiagWinner || isDiagReverseWinner)
+                DeclareWinner();
+
+
+
+
+        }
     }
 }

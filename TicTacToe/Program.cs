@@ -48,11 +48,8 @@ namespace TicTacToe
         {
             _grid = InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
 
-
-         
-
-
             UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
+            GameLogic.PlayerName = Console.ReadLine();
 
             GameLogic.InitializePlayer(Constant.AI, Constant.AI_CHAR);
             GameLogic.InitializePlayer(Constant.PLAYER, Constant.PLAYER_CHAR);
@@ -72,6 +69,7 @@ namespace TicTacToe
         private static void DefineGridPosition(int character, Func<int[]> playerPositionChoic)
         {
             bool isNotEmpty = true;
+
             var playerPosition = playerPositionChoic();
             int playedRow = playerPosition[0];
             int playedCol = playerPosition[1];
@@ -79,11 +77,11 @@ namespace TicTacToe
 
             while (isNotEmpty)
                 {
-                    isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
+                    isNotEmpty = CellNotEmpty(playedRow, playedCol);
                     if (isNotEmpty)
                     {
 
-                        UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}"); //HARDCODED ?
+                        UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playedRow}, COL: {playedCol}"); //HARDCODED ?
                         playerPosition = playerPositionChoic();
                         playedRow = playerPosition[0];
                         playedCol = playerPosition[1];
@@ -95,6 +93,7 @@ namespace TicTacToe
             _grid[playedRow, playedCol] = character;
             GameLogic.HorizontalWinnerChecker(_grid, playedRow);
             GameLogic.VerticalWinnerChecker(_grid, playedCol);
+            GameLogic.DiagonalWinnerChecker(_grid,playedRow, playedCol);
             SwitchPlayerTurn();
 
         }
@@ -104,6 +103,7 @@ namespace TicTacToe
             if (GameLogic.IsPlayerTurn)
             {
                 GameLogic.IsPlayerTurn = false;
+        
             }
             else
             {
