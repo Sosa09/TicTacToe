@@ -14,7 +14,7 @@ namespace TicTacToe
     public class Program
     {
         static int[,] _grid;
-    
+        
 
         public static void Main(string[] args)
         {
@@ -22,7 +22,8 @@ namespace TicTacToe
 
             while(true)
             {
-                DefineGridPosition();
+                DeterminePlayerTurn();
+        
 
                 RefreshGameGrid();
                 
@@ -31,6 +32,16 @@ namespace TicTacToe
          
             }
 
+        }
+
+        private static void DeterminePlayerTurn()
+        {
+
+            if (GameLogic.IsPlayerTurn)
+                DefineGridPosition(Constant.PLAYER_CHAR, UIExperience.PlayerPoistionChoice);
+            else
+                DefineGridPosition(Constant.AI_CHAR, GameLogic.AITurn);
+            
         }
 
         private static void InitGameSession()
@@ -58,59 +69,46 @@ namespace TicTacToe
 
         //TODO get rid of if else and check only at the end if is player turn 
         //chang CHAR or ASSIGN char to the selected player
-        private static void DefineGridPosition()
+        private static void DefineGridPosition(int character, Func<int[]> playerPositionChoic)
         {
             bool isNotEmpty = true;
-            var playerPosition = new int[2];
-            var character = Constant.PLAYER_CHAR;
+            var playerPosition = playerPositionChoic();
+            int playedRow = playerPosition[0];
+            int playedCol = playerPosition[1];
 
-            if (GameLogic.IsPlayerTurn)
-            {
-                playerPosition = UIExperience.PlayerPoistionChoice();
-                
-                while (isNotEmpty)
+
+            while (isNotEmpty)
                 {
                     isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
                     if (isNotEmpty)
                     {
+
                         UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playerPosition[0]}"); //HARDCODED ?
-                        playerPosition = UIExperience.PlayerPoistionChoice();
-                    }
+                        playerPosition = playerPositionChoic();
+                        playedRow = playerPosition[0];
+                        playedCol = playerPosition[1];
+                }
                    
                 }
-         
 
+
+            _grid[playedRow, playedCol] = character;
+            GameLogic.HorizontalWinnerChecker(_grid, playedRow);
+            GameLogic.VerticalWinnerChecker(_grid, playedCol);
+            SwitchPlayerTurn();
+
+        }
+
+        private static void SwitchPlayerTurn()
+        {
+            if (GameLogic.IsPlayerTurn)
+            {
                 GameLogic.IsPlayerTurn = false;
-            }              
+            }
             else
             {
-               
-                playerPosition = GameLogic.AITurn();
-            
-                while (isNotEmpty)
-                {
-                    isNotEmpty = CellNotEmpty(playerPosition[0], playerPosition[1]);
-                    if (isNotEmpty)
-                    {
-                        playerPosition = GameLogic.AITurn();
-                    }
-                }
-                        character = Constant.AI_CHAR;
                 GameLogic.IsPlayerTurn = true;
             }
-
-
-
-
-
-  
-
-
-            _grid[playerPosition[0], playerPosition[1]] = character;
-            GameLogic.HorizontalWinnerChecker(_grid, playerPosition[0]);
-            GameLogic.VerticalWinnerChecker(_grid, playerPosition[1]);
-
-
         }
 
         private static bool CellNotEmpty(int row, int col)

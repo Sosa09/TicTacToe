@@ -25,6 +25,7 @@ namespace TicTacToe
             Random random = new Random();
             ai_poistions[0] = random.Next(1, 4);
             ai_poistions[1] = random.Next(1, 4);
+            //TODO: check if position is already taken
             return ai_poistions;
 
         }
@@ -34,7 +35,11 @@ namespace TicTacToe
             throw new NotImplementedException();
         }
 
-
+        private static void DeclareWinner()
+        {
+            UIExperience.DisplayWinner("Winner");
+            Console.ReadKey();
+        }
 
         public static void HorizontalWinnerChecker(int[,] _grid, int playedRow)
         {
@@ -62,8 +67,7 @@ namespace TicTacToe
             //TODO: Create function for this
             if (isWinner)
             {
-                UIExperience.DisplayWinner("Winner");
-                Console.ReadKey();
+                DeclareWinner();
             }
       
          
@@ -97,13 +101,14 @@ namespace TicTacToe
             //TODO: Create function for this
             if (isWinner)
             {
-                UIExperience.DisplayWinner("Winner");
-                Console.ReadKey();
+                DeclareWinner();
             }
 
 
 
 
         }
+    
+    
     }
 }
