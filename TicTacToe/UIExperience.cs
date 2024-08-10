@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TicTacToe
@@ -58,7 +59,10 @@ namespace TicTacToe
 
         public static void DisplayWinner(string Winner) 
         {
-            Console.WriteLine(Winner);
+            RefreshInterface();
+            Console.WriteLine("The winner is: {Winner}");
+
+
         }
 
         //NOTE FOR ALEX IS THIS CINSDERED LOGIC ?
@@ -85,6 +89,18 @@ namespace TicTacToe
         public static void DisplayCellNotEmptyMessage(string message)
         {
             Console.WriteLine(message);
+        }
+
+        internal static void EndOfGame()
+        {
+            Console.WriteLine("Do you want a rematch ? y or n");
+            char k = Console.ReadKey().KeyChar;
+
+            if (k == 'y') 
+            {
+                GameLogic.InitGameSession();
+            }
+            Console.ReadKey();
         }
     }
 }
