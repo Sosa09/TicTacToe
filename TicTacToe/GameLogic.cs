@@ -193,7 +193,7 @@ namespace TicTacToe
         public static void DeterminePlayerTurn()
         {
 
-            if (GameLogic.IsPlayerTurn)
+            if (IsPlayerTurn)
                 DefineGridPosition(Constant.PLAYER_CHAR, UIExperience.PlayerPoistionChoice);
             else
                 DefineGridPosition(Constant.AI_CHAR, GameLogic.AITurn);
@@ -205,10 +205,10 @@ namespace TicTacToe
             _grid = InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
 
             UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
-            GameLogic.PlayerName = Console.ReadLine();
+            PlayerName = Console.ReadLine();
 
-            GameLogic.InitializePlayer(Constant.AI, Constant.AI_CHAR);
-            GameLogic.InitializePlayer(Constant.PLAYER, Constant.PLAYER_CHAR);
+            InitializePlayer(Constant.AI, Constant.AI_CHAR);
+            InitializePlayer(Constant.PLAYER, Constant.PLAYER_CHAR);
 
             UIExperience.DesignGameGrid(RefreshGameGrid()); //initializing new game grid
 
@@ -247,23 +247,23 @@ namespace TicTacToe
 
 
             _grid[playedRow, playedCol] = character;
-            GameLogic.HorizontalWinnerChecker(_grid, playedRow);
-            GameLogic.VerticalWinnerChecker(_grid, playedCol);
-            GameLogic.DiagonalWinnerChecker(_grid, playedRow, playedCol);
+            HorizontalWinnerChecker(_grid, playedRow);
+            VerticalWinnerChecker(_grid, playedCol);
+            DiagonalWinnerChecker(_grid, playedRow, playedCol);
             SwitchPlayerTurn();
 
         }
 
         private static void SwitchPlayerTurn()
         {
-            if (GameLogic.IsPlayerTurn)
+            if (IsPlayerTurn)
             {
-                GameLogic.IsPlayerTurn = false;
+                IsPlayerTurn = false;
 
             }
             else
             {
-                GameLogic.IsPlayerTurn = true;
+                IsPlayerTurn = true;
             }
         }
 

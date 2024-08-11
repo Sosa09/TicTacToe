@@ -60,7 +60,7 @@ namespace TicTacToe
         public static void DisplayWinner(string Winner) 
         {
             RefreshInterface();
-            Console.WriteLine("The winner is: {Winner}");
+            Console.WriteLine($"The winner is: {Winner}");
 
 
         }
