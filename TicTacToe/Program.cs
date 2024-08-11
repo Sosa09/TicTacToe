@@ -20,6 +20,7 @@ namespace TicTacToe
         {
 
             InitGameSession();
+            GameLogic.playedGrids = 0;
 
             while(true)
             {
