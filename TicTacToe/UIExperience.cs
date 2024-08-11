@@ -15,7 +15,7 @@ namespace TicTacToe
     public static class UIExperience
     {
 
-        public static void InitializationInterface()
+        public static void InitializeInterface()
         {
             GameInstrcution();
             Console.WriteLine("Hello Please enter your name to start to play: ");
@@ -98,7 +98,7 @@ namespace TicTacToe
 
             if (k == 'y') 
             {
-                GameLogic.InitGameSession();
+                Program.Main(new string[1]);
             }
             Console.ReadKey();
         }

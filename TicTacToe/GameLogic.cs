@@ -8,17 +8,10 @@ namespace TicTacToe
 {
     public static class GameLogic
     {
-        static int[,] _grid;
-        public static bool IsPlayerTurn = true;
         public static string PlayerName = "";
-        /// <summary>
-      
-        /// </summary>
-        /// <param name="playerName">represents the player name</param>
-        public static void InitializePlayer(string playerName, int playerChar )
-        {
-            
-        }
+        public static bool IsPlayerTurn = true;
+        public static int playedGrids = 0;
+        private static int[,] _grid;
 
         //TODO REMOVE MAGIC NUMBERS
         public static int[] AITurn()
@@ -33,28 +26,18 @@ namespace TicTacToe
         }
 
 
-        private static void DeclareWinner()
-        {
-            UIExperience.DesignGameGrid(RefreshGameGrid());
-            if ( !IsPlayerTurn )
-            {
-                PlayerName = Constant.AI; 
-            }
-            UIExperience.DisplayWinner(PlayerName);
         
-            UIExperience.EndOfGame();
-        }
 
-        public static void HorizontalWinnerChecker(int[,] _grid, int playedRow)
+        public static void HorizontalWinnerChecker(int[,] grid, int playedRow)
         {
 
             bool isWinner = true;
             //TODO: check only row where the player has played to gain performance and speed
-            int firstValue = _grid[playedRow, Constant.FIRST_PLAYABLE_INDEX_GRID];
+            int firstValue = grid[playedRow, Constant.FIRST_PLAYABLE_INDEX_GRID];
             //i = 1 represents the first playable indexgrid
             for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < Constant.TOTAL_GRID_COL; i++)
             {
-                int nextValue = _grid[playedRow, i];
+                int nextValue = grid[playedRow, i];
 
                 if (nextValue == Constant.BOX_EMPTY_VALUE || nextValue != firstValue)
                 {
@@ -71,7 +54,7 @@ namespace TicTacToe
             //TODO: Create function for this
             if (isWinner)
             {
-                DeclareWinner();
+                Program.DeclareWinner();
             }
       
          
@@ -79,58 +62,48 @@ namespace TicTacToe
         
         }
 
-        public static void VerticalWinnerChecker(int[,] _grid, int playedCol)
+        public static void VerticalWinnerChecker(int[,] grid, int playedCol)
         {
 
             bool isWinner = true;
             //TODO: check only row where the player has played to gain performance and speed
-            int firstValue = _grid[Constant.FIRST_PLAYABLE_INDEX_GRID, playedCol];
+            int firstValue = grid[Constant.FIRST_PLAYABLE_INDEX_GRID, playedCol];
             //i = 1 represents the first playable indexgrid
             for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < Constant.TOTAL_GRID_ROW; i++)
             {
-                int nextValue = _grid[i,playedCol];
+                int nextValue = grid[i,playedCol];
 
                 if (nextValue == Constant.BOX_EMPTY_VALUE || nextValue != firstValue)
                 {
                     isWinner = false;
                     break; //break the statement and continue the game cause nothing to compare
                 }
-
-
-
-
-
             }
-
             //TODO: Create function for this
             if (isWinner)
             {
-                DeclareWinner();
+                Program.DeclareWinner();
             }
-
-
-
-
         }
     
-        public static void DiagonalWinnerChecker(int[,] _grid, int playedRow, int playedCol)
+        public static void DiagonalWinnerChecker(int[,] grid, int playedRow, int playedCol)
         {
 
-            int value = _grid[playedRow, playedCol];
+            int value = grid[playedRow, playedCol];
             int reverseIndex = 3; //TODO REMOVE MAGIC NUMBER
             bool isDiagWinner = true;   
             bool isDiagReverseWinner = true;
 
-            for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < _grid.GetLength(0); i++)
+            for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < grid.GetLength(0); i++)
             {
                 //1,1 and 1,3 not equal then break
-                if (value != _grid[i,i] )
+                if (value != grid[i,i] )
                 {
                     isDiagWinner = false;  
                
                    
                 }
-                if(value != _grid[i, reverseIndex] )
+                if(value != grid[i, reverseIndex] )
                 {
                     isDiagReverseWinner = false;
                     if(!isDiagWinner) //this will help to break if  both left diag and right diag are not equal
@@ -143,7 +116,7 @@ namespace TicTacToe
                 reverseIndex--;
             }
             if (isDiagWinner || isDiagReverseWinner)
-                DeclareWinner();
+                Program.DeclareWinner();
 
 
 
@@ -160,9 +133,9 @@ namespace TicTacToe
         /// _initGrid(4,4); 
         /// THE GRID 1 2 3 header rows and colunn rows
         /// </returns>
-        private static int[,] InitGameGrid(int rows, int cols)
+        public static void InitGameGrid(int rows, int cols)
         {
-            int[,] tempGrid = new int[rows, cols];
+            _grid = new int[rows, cols];
             //TODO: change 2 the a meaningful variable like representing headers row and columns
             for (int i = 0; i < rows; i++)
             {
@@ -172,20 +145,16 @@ namespace TicTacToe
                     {
                         if (j == 0)
                             continue;
-                        tempGrid[i, j] = j;
+                        _grid[i, j] = j;
                     }
                 }
                 else
                 {
-                    tempGrid[i, 0] = i;
+                    _grid[i, 0] = i;
                 }
-
-
-
-
             }
 
-            return tempGrid;
+
 
         }
 
@@ -196,37 +165,19 @@ namespace TicTacToe
             if (IsPlayerTurn)
                 DefineGridPosition(Constant.PLAYER_CHAR, UIExperience.PlayerPoistionChoice);
             else
-                DefineGridPosition(Constant.AI_CHAR, GameLogic.AITurn);
+                DefineGridPosition(Constant.AI_CHAR, AITurn);
 
         }
 
-        public static void InitGameSession()
-        {
-            _grid = InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
-
-            UIExperience.InitializationInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
-            PlayerName = Console.ReadLine();
-
-            InitializePlayer(Constant.AI, Constant.AI_CHAR);
-            InitializePlayer(Constant.PLAYER, Constant.PLAYER_CHAR);
-
-            UIExperience.DesignGameGrid(RefreshGameGrid()); //initializing new game grid
-
-            //Player can start over compuyter
-            GameLogic.IsPlayerTurn = true;
-
-
-
-        }
 
 
         //TODO get rid of if else and check only at the end if is player turn 
         //chang CHAR or ASSIGN char to the selected player
-        private static void DefineGridPosition(int character, Func<int[]> playerPositionChoic)
+        private static void DefineGridPosition(int character, Func<int[]> playerPositionChoice)
         {
             bool isNotEmpty = true;
 
-            var playerPosition = playerPositionChoic();
+            var playerPosition = playerPositionChoice();
             int playedRow = playerPosition[0];
             int playedCol = playerPosition[1];
 
@@ -238,7 +189,7 @@ namespace TicTacToe
                 {
 
                     UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playedRow}, COL: {playedCol}"); //HARDCODED ?
-                    playerPosition = playerPositionChoic();
+                    playerPosition = playerPositionChoice();
                     playedRow = playerPosition[0];
                     playedCol = playerPosition[1];
                 }
