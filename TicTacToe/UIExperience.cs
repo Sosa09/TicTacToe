@@ -18,21 +18,15 @@ namespace TicTacToe
         public static void InitializeInterface()
         {
             GameInstrcution();
-            Console.WriteLine("Hello Please enter your name to start to play: ");
+            Console.WriteLine();
+
+            Console.Write(Constant.REQUEST_PLAYER_NAME_MESSAGE);
+   
         }
 
         private static void GameInstrcution()
         {
-            Console.WriteLine("The grid is composed of 3 rows and 3 columns each containing a header from 1 to 3.\n" +
-                    "To place yor value in a certan plaace of the grid begin with the row and finalize with the column.\n " +
-                    "FOR EXAMPLE\n" +
-
-                    "  1 2 3" +
-                    "\n1" +
-                    "\n2" +
-                    "\n3" +
-                    "\n" +
-                    "let's say you want to pla ce your char on the middeltop so you start with row 1 press enter then column 2 ");
+            Console.WriteLine(Constant.GAME_INSTRUCTIONS);
         }
         private static void DisplayGamerInfo(string playerName)
         {
@@ -69,21 +63,26 @@ namespace TicTacToe
         public static int[] PlayerPoistionChoice()
         {
             int[] playerChoice = new int[2];
-            Console.WriteLine("Enter the nr of row in which you want to insert you char");
+            Console.WriteLine(Constant.USER_INPUT_ROW_MESSAGE);
             string row = Console.ReadLine();
 
-            Console.WriteLine("Enter the nr of col in which you want to insert you char");
+            Console.WriteLine(Constant.USER_INPUT_COL_MESSAGE);
             string col = Console.ReadLine();
 
-            if(!int.TryParse(row, out int i) || !int.TryParse(col, out int n))
-            { 
-                Console.WriteLine("all fields should have a must be from type integer, try again");
+            if(int.TryParse(row, out int convertedRow) && int.TryParse(col, out int convertedCol))
+            {
+                playerChoice[0] = convertedRow;
+                playerChoice[1] = convertedCol;
+
+
+            }
+            else
+            {
+                Console.WriteLine(Constant.INPUT_NUMBER_ERROR_MESSAGE);
                 PlayerPoistionChoice();
             }
-            playerChoice[0] = (int.Parse(row));
-            playerChoice[1] = (int.Parse(col));
-            return playerChoice;
 
+            return playerChoice;
         }
 
         public static void DisplayCellNotEmptyMessage(string message)
@@ -93,7 +92,7 @@ namespace TicTacToe
 
         internal static void EndOfGame()
         {
-            Console.WriteLine("Do you want a rematch ? y or n");
+            Console.WriteLine(Constant.REMATCH);
             char k = Console.ReadKey().KeyChar;
 
             if (k == 'y') 

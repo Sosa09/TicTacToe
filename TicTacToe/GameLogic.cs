@@ -13,14 +13,16 @@ namespace TicTacToe
         public static int playedGrids = 0;
         private static int[,] _grid;
 
-        //TODO REMOVE MAGIC NUMBERS
+
         public static int[] AITurn()
         {
             int[] ai_poistions = new int[2];
+
             Random random = new Random();
-            ai_poistions[0] = random.Next(1, 4);
-            ai_poistions[1] = random.Next(1, 4);
-        
+
+            for (int i = 0; i < ai_poistions.Length; i++)
+                ai_poistions[i] = random.Next(Constant.MIN_AI_GRID_POSITION, Constant.MAX_AI_GRID_POSITION);
+ 
             return ai_poistions;
 
         }
@@ -51,17 +53,20 @@ namespace TicTacToe
 
             }
 
-            //TODO: Create function for this
-            if (isWinner)
-            {
-                Program.DeclareWinner();
-            }
-      
+
+            CheckWin(isWinner);
          
             
         
         }
-
+        private static void CheckWin(bool isWinner)
+        {
+ 
+            if (isWinner)
+            {
+                Program.DeclareWinner();
+            }
+        }
         public static void VerticalWinnerChecker(int[,] grid, int playedCol)
         {
 
@@ -79,11 +84,7 @@ namespace TicTacToe
                     break; //break the statement and continue the game cause nothing to compare
                 }
             }
-            //TODO: Create function for this
-            if (isWinner)
-            {
-                Program.DeclareWinner();
-            }
+            CheckWin(isWinner);
         }
     
         public static void DiagonalWinnerChecker(int[,] grid, int playedRow, int playedCol)
@@ -136,14 +137,14 @@ namespace TicTacToe
         public static void InitGameGrid(int rows, int cols)
         {
             _grid = new int[rows, cols];
-            //TODO: change 2 the a meaningful variable like representing headers row and columns
+
             for (int i = 0; i < rows; i++)
             {
                 if (i == 0)
                 {
                     for (int j = 0; j < cols; j++)
                     {
-                        if (j == 0)
+                        if (j == 0) //ignore first element of the array whcih is the upperleft int[0,0]  
                             continue;
                         _grid[i, j] = j;
                     }
@@ -180,7 +181,7 @@ namespace TicTacToe
             var playerPosition = playerPositionChoice();
             int playedRow = playerPosition[0];
             int playedCol = playerPosition[1];
-
+            string zoneNotEmptyMessage = $"The selected zone is not empty !Zone ROW: {playedRow}, COL: {playedCol}";
 
             while (isNotEmpty)
             {
@@ -188,7 +189,7 @@ namespace TicTacToe
                 if (isNotEmpty)
                 {
 
-                    UIExperience.DisplayCellNotEmptyMessage($"The selected zone is not empty !Zone ROW: {playedRow}, COL: {playedCol}"); //HARDCODED ?
+                    UIExperience.DisplayCellNotEmptyMessage(zoneNotEmptyMessage);
                     playerPosition = playerPositionChoice();
                     playedRow = playerPosition[0];
                     playedCol = playerPosition[1];
