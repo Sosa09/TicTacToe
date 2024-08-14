@@ -37,23 +37,47 @@ namespace TicTacToe
         {
             Console.WriteLine($"Your turn: {playerName}");
         }
-        public static void DesignGameGrid(string Headers)
+        public static void DesignGameGrid(int[,] grid)
         {
-
-            Console.Write(Headers);
+            string headers = RefreshInterface(grid);
+            Console.Write(headers);
             Console.WriteLine();
 
 
         }
 
-        public static void RefreshInterface()
+        public static string RefreshInterface(int[,] grid)
         {
             Console.Clear();
+            string cell = "";
+
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    int value = grid[i, j];
+
+                    if (value == Constant.BOX_EMPTY_VALUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
+                        cell += Constant.GAP;
+                    else
+                    {
+                        cell += $"{value} ";
+                    }
+
+                }
+
+                cell += "\n";
+            }
+
+
+
+            return cell;
         }
 
         public static void DisplayWinner(string Winner) 
         {
-            RefreshInterface();
+            Console.Clear();
             Console.WriteLine($"The winner is: {Winner}");
 
 
