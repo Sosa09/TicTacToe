@@ -8,9 +8,8 @@ namespace TicTacToe
 {
     public static class GameLogic
     {
-        public static string PlayerName = "";
-        public static bool IsPlayerTurn = true;
-        public static int playedGrids = 0;
+
+
 
 
 

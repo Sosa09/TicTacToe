@@ -14,36 +14,40 @@ namespace TicTacToe
     /// </summary>
     public class Program
     {
-        
-        
+
+
 
         public static void Main(string[] args)
         {
             bool isPlayerTurn = new bool();
             string playerName = string.Empty;
+            int playedGridsCount = 0;
             int[,] grid = GameLogic.InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
             InitGameSession(grid, ref playerName, ref isPlayerTurn);
 
-            GameLogic.playedGrids = 0;
 
-            while(true)
+
+            while (true)
             {
-                if (GameLogic.playedGrids == Constant.DRAFT)
-                {
-                    DeclareDraft();
-                }
-                isPlayerTurn = SwitchPlayerTurn(isPlayerTurn); //player can play first
+
                 DeterminePlayerTurm(grid, isPlayerTurn, playerName);
-        
+
                 //design the base GRID
                 UIExperience.RefreshInterface(grid);
 
-                
                 UIExperience.DesignGameGrid(grid); //initializing new game grid
-                GameLogic.playedGrids++;
-         
-            }
+                isPlayerTurn = SwitchPlayerTurn(isPlayerTurn);
+                playedGridsCount++;
 
+                if (playedGridsCount == Constant.DRAFT)
+                {
+                    //Run if if draft
+                    EndGame(); 
+                }
+
+            
+
+            }
         }
 
         private static void InitGameSession(int[,] grid,ref string playerName, ref bool isPlayerTurn)
@@ -57,7 +61,7 @@ namespace TicTacToe
             UIExperience.DesignGameGrid(grid); //initializing new game grid
 
             //Player can start over computer
-            isPlayerTurn = false;
+            isPlayerTurn = true;
 
         }
 
@@ -68,12 +72,21 @@ namespace TicTacToe
 
             UIExperience.DisplayWinner(winnerName);
 
-            UIExperience.EndOfGame();
+            UIExperience.Rematch();
+
+            EndGame();
         }
 
-        public static void DeclareDraft()
+        public static void EndGame()
         {
-            UIExperience.EndOfGame();
+            if (UIExperience.Rematch())
+            {
+                Main(new string[0]);
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
         }
 
 
@@ -81,6 +94,7 @@ namespace TicTacToe
         {
             string currentPlayer = Constant.AI;
             int playerChar = Constant.AI_CHAR;
+
             if(isPlayerTurn)
             {
                 currentPlayer = playerName;
@@ -113,7 +127,7 @@ namespace TicTacToe
                     UIExperience.DisplayCellNotEmptyMessage(playedRow, playedCol);
 
                     currentPlayerPosition = playerPoistionChoice();
-                    playedRow = currentPlayerPosition[0]; //0 represents the row TO CONSTANT
+                    playedRow = currentPlayerPosition[0]; //0 represents the row 
                     playedCol = currentPlayerPosition[1]; //1 represenets the col
                 }
 
@@ -121,6 +135,7 @@ namespace TicTacToe
 
 
             SetCharPosition(grid, playerChar, playedRow, playedCol);
+
             if (GameLogic.IsWinner(grid, playedRow, playedCol))
             {
                 DeclareWinner(grid, currentPlayer);
@@ -152,18 +167,7 @@ namespace TicTacToe
 
         }
 
-        //private string SetCcurrentPlayerNamePlayRound(string currentPlayer){
-        //  ivoked from switchplayerTurn which will determine the next player that has to make a move
-        // return currentPlayer  
-        //}
-        //private GetCurrentPlayerNamePlayRound()
-        //{
-        //  return actual player's turn if AI shows AI else shows player's Name
-        //}
-        //private GetPlayerName()
-        //{
 
-        //}
 
     }
 }

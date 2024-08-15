@@ -78,7 +78,7 @@ namespace TicTacToe
         public static void DisplayWinner(string Winner) 
         {
             Console.Clear();
-            Console.WriteLine($"The winner is: {Winner}");
+            Console.WriteLine($"The winner is: {0}");
 
 
         }
@@ -114,16 +114,18 @@ namespace TicTacToe
             Console.WriteLine(message);
         }
 
-        internal static void EndOfGame()
+        internal static bool Rematch()
         {
-            Console.WriteLine(Constant.REMATCH);
+            Console.WriteLine(Constant.REMATCH_TEXT);
             char k = Console.ReadKey().KeyChar;
 
-            if (k == Constant.KEY_PRESSED_Y) 
+            if (k == Constant.REMATCH_KEY_PRESSED) 
             {
-                Console.WriteLine("Restarting DeterminePlayerTurm");
+                Console.WriteLine("Restarting Game");
+                return true;
             }
             Console.ReadKey();
+            return false;
         }
 
         internal static void DisplayCellNotEmptyMessage(int playedRow, int playedCol)
