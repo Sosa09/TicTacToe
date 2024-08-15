@@ -50,7 +50,7 @@ namespace TicTacToe
 
             }
 
-            return false;
+            return isWinner;
         
         }
 
@@ -71,7 +71,8 @@ namespace TicTacToe
                     break; //break the statement and continue the game cause nothing to compare
                 }
             }
-            return false;
+            
+            return isWinner;
         }
     
         public static bool IsDiagonalWinner(int[,] grid, int playedRow, int playedCol)
@@ -104,11 +105,7 @@ namespace TicTacToe
                 reverseIndex--;
             }
 
-            //if (isDiagWinner || isDiagReverseWinner)
-            //    Program.DeclareWinner();
-
-
-            return false;
+            return isDiagWinner || isDiagReverseWinner;
 
         }
 
@@ -149,20 +146,10 @@ namespace TicTacToe
 
         }
 
-
-
-
-        public static void SetCharPosition(int[,] grid, int character, int playedRow, int playedCol)
-        {
-
-            grid[playedRow, playedCol] = character;
-
        
 
 
-   
 
-        }
 
         public static bool IsWinner(int[,] grid, int playedRow, int playedCol)
         {
@@ -173,8 +160,6 @@ namespace TicTacToe
             
             return false;
             
-
-          
         }
 
         public static bool CellIsNotEmpty(int[,] grid, int row, int col)

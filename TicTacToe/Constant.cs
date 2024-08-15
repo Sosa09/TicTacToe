@@ -18,6 +18,8 @@ namespace TicTacToe
         public const int AI_CHAR = 7;
         public const int AI_INDEX = 0;
         public const int PLAYER_INDEX = 1;
+        public const int PLAYED_ROW_INDEX = 0;
+        public const int PLAYED_COL_INDEX = 1;
         public const int BOX_EMPTY_VALUE = 0;
         public const string GAP = " ";
         public const int FIRST_PLAYABLE_INDEX_GRID = 1;
@@ -37,6 +39,7 @@ namespace TicTacToe
         public const string USER_INPUT_COL_MESSAGE = "Enter the column number: ";
         public const string USER_INPUT_ROW_MESSAGE = "Enter the row number: ";
         public const string REQUEST_PLAYER_NAME_MESSAGE = "Enter your name: ";
+        public const char KEY_PRESSED_Y = 'y';
 
     }
 }

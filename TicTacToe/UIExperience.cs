@@ -59,7 +59,7 @@ namespace TicTacToe
                     int value = grid[i, j];
 
                     if (value == Constant.BOX_EMPTY_VALUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
-                        cell += Constant.GAP;
+                        cell += Constant.GAP + Constant.GAP;
                     else
                     {
                         cell += $"{value} ";
@@ -109,7 +109,7 @@ namespace TicTacToe
             return playerChoice;
         }
 
-        public static void DisplayCellNotEmptyMessage(string message)
+        public static void DisplayCellNotEmptyMessage(int playedRow, string message)
         {
             Console.WriteLine(message);
         }
@@ -119,11 +119,16 @@ namespace TicTacToe
             Console.WriteLine(Constant.REMATCH);
             char k = Console.ReadKey().KeyChar;
 
-            if (k == 'y') 
+            if (k == Constant.KEY_PRESSED_Y) 
             {
-                Program.Main(new string[1]);
+                Console.WriteLine("Restarting DeterminePlayerTurm");
             }
             Console.ReadKey();
+        }
+
+        internal static void DisplayCellNotEmptyMessage(int playedRow, int playedCol)
+        {
+            Console.WriteLine($"The selected zone is not empty !\nZone ROW: {playedRow}, COL: {playedCol}"); //NOT CONSTANT BECAUSSE OF EMBEDED STRINGS
         }
     }
 }

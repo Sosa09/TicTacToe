@@ -19,10 +19,10 @@ namespace TicTacToe
 
         public static void Main(string[] args)
         {
-            bool isPlayerTurn = false;
-            string playerName;
+            bool isPlayerTurn = new bool();
+            string playerName = string.Empty;
             int[,] grid = GameLogic.InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
-            InitGameSession(grid);
+            InitGameSession(grid, ref playerName, ref isPlayerTurn);
 
             GameLogic.playedGrids = 0;
 
@@ -33,7 +33,7 @@ namespace TicTacToe
                     DeclareDraft();
                 }
                 isPlayerTurn = SwitchPlayerTurn(isPlayerTurn); //player can play first
-                DeterminePlayerTurn(grid, isPlayerTurn);
+                DeterminePlayerTurm(grid, isPlayerTurn, playerName);
         
                 //design the base GRID
                 UIExperience.RefreshInterface(grid);
@@ -46,30 +46,27 @@ namespace TicTacToe
 
         }
 
-        private static void InitGameSession(int[,] grid)
+        private static void InitGameSession(int[,] grid,ref string playerName, ref bool isPlayerTurn)
         {
             
-
+            
             UIExperience.InitializeInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
-            GameLogic.PlayerName = Console.ReadLine();
+
+            playerName = Console.ReadLine();
             
             UIExperience.DesignGameGrid(grid); //initializing new game grid
 
-            //Player can start over compuyter
-            GameLogic.IsPlayerTurn = true;
+            //Player can start over computer
+            isPlayerTurn = false;
 
         }
 
 
-        public static void DeclareWinner(int[,] grid)
+        private static void DeclareWinner(int[,] grid, string winnerName)
         { 
             UIExperience.DesignGameGrid(grid);
-            
-            if (!GameLogic.IsPlayerTurn)
-            {
-                GameLogic.PlayerName = Constant.AI;
-            }
-            UIExperience.DisplayWinner(GameLogic.PlayerName);
+
+            UIExperience.DisplayWinner(winnerName);
 
             UIExperience.EndOfGame();
         }
@@ -80,56 +77,61 @@ namespace TicTacToe
         }
 
 
-        public static void DeterminePlayerTurn(int[,] grid, bool isPlayerTurn)
+        private static void DeterminePlayerTurm(int[,] grid, bool isPlayerTurn, string playerName)
         {
-            int playedRow;
-            int playedCol;
-            int playerChar = 0;
-            if (isPlayerTurn)
+            string currentPlayer = Constant.AI;
+            int playerChar = Constant.AI_CHAR;
+            if(isPlayerTurn)
             {
-                int[] playerPosition = UIExperience.PlayerPoistionChoice();
-                bool isNotEmpty = true;
-
-                
-                playedRow = playerPosition[0];
-                playedCol = playerPosition[1];
+                currentPlayer = playerName;
                 playerChar = Constant.PLAYER_CHAR;
-                string zoneNotEmptyMessage = $"The selected zone is not empty !Zone ROW: {playedRow}, COL: {playedCol}";
+                PlayerGamePlay(grid, playerChar, currentPlayer, UIExperience.PlayerPoistionChoice);
 
-                while (isNotEmpty)
-                {
-                    isNotEmpty = GameLogic.CellIsNotEmpty(grid, playedRow, playedCol);
-                    if (isNotEmpty)
-                    {
-
-                        UIExperience.DisplayCellNotEmptyMessage(zoneNotEmptyMessage);
-                        playerPosition = UIExperience.PlayerPoistionChoice();
-                        playedRow = playerPosition[0];
-                        playedCol = playerPosition[1];
-                    }
-
-                }
-
-          
-     
             }
             else
             {
-                int[] aiPosition = GameLogic.AITurn();
-                playedRow = aiPosition[0];
-                playedCol = aiPosition[1];
-                playerChar = Constant.AI_CHAR;
-             
+                PlayerGamePlay(grid, playerChar,currentPlayer, GameLogic.AITurn);
+
             }
 
 
-            GameLogic.SetCharPosition(grid, playerChar, playedRow, playedCol);
-            GameLogic.IsWinner(grid, playedRow, playedCol);
+        }
 
+        private static void PlayerGamePlay(int[,] grid, int playerChar, string currentPlayer, Func<int[]> playerPoistionChoice)
+        {
+            int[] currentPlayerPosition = playerPoistionChoice();
+            int playedRow = currentPlayerPosition[0]; //0 represents the row TO CONSTANT
+            int playedCol = currentPlayerPosition[1]; //1 represenets the col
+            
+            bool isNotEmpty = true;
+
+            while (isNotEmpty)
+            {
+                isNotEmpty = GameLogic.CellIsNotEmpty(grid, playedRow, playedCol);
+                if (isNotEmpty)
+                {
+                    UIExperience.DisplayCellNotEmptyMessage(playedRow, playedCol);
+
+                    currentPlayerPosition = playerPoistionChoice();
+                    playedRow = currentPlayerPosition[0]; //0 represents the row TO CONSTANT
+                    playedCol = currentPlayerPosition[1]; //1 represenets the col
+                }
+
+            }
+
+
+            SetCharPosition(grid, playerChar, playedRow, playedCol);
+            if (GameLogic.IsWinner(grid, playedRow, playedCol))
+            {
+                DeclareWinner(grid, currentPlayer);
+            }
         }
 
 
-        public static bool SwitchPlayerTurn(bool isPlayerTurn)
+
+
+
+        private static bool SwitchPlayerTurn(bool isPlayerTurn)
         {
             if (isPlayerTurn)
             {
@@ -142,7 +144,26 @@ namespace TicTacToe
             }
         }
 
+        
 
+        private static void SetCharPosition(int[,] grid, int character, int playedRow, int playedCol)
+        {
+            grid[playedRow, playedCol] = character;
+
+        }
+
+        //private string SetCcurrentPlayerNamePlayRound(string currentPlayer){
+        //  ivoked from switchplayerTurn which will determine the next player that has to make a move
+        // return currentPlayer  
+        //}
+        //private GetCurrentPlayerNamePlayRound()
+        //{
+        //  return actual player's turn if AI shows AI else shows player's Name
+        //}
+        //private GetPlayerName()
+        //{
+
+        //}
 
     }
 }
