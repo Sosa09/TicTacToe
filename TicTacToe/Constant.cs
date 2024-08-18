@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     public static class Constant
     {
@@ -22,8 +16,10 @@ namespace TicTacToe
         public const int BOX_EMPTY_VALUE = 0;
         public const string GAP = " ";
         public const int FIRST_PLAYABLE_INDEX_GRID = 1;
-        public const int DRAFT = 9;
-        public const string REMATCH_TEXT = "Do you want a rematch ? y or n";
+        public const int DRAFT_VALUE = 9;
+        public const int WIN_CODE = 1;
+        public const int DRAFT_CODE = 0;
+        public const string REMATCH_CHOICE_TEXT = "y or n";
         public const string GAME_INSTRUCTIONS = "The grid is composed of 3 rows and 3 columns each containing a header from 1 to 3.\n" +
                                                 "To place yor value in a certan plaace of the grid begin with the row and finalize with the column.\n " +
                                                 "FOR EXAMPLE\n" +

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TicTacToe
 {
@@ -14,46 +7,45 @@ namespace TicTacToe
     /// </summary>
     public static class UIExperience
     {
-
         public static void InitializeInterface()
         {
             GameInstrcution();
             Console.WriteLine();
 
             Console.Write(Constant.REQUEST_PLAYER_NAME_MESSAGE);
-   
         }
 
         private static void GameInstrcution()
         {
             Console.WriteLine(Constant.GAME_INSTRUCTIONS);
         }
+        //TODO: 
         private static void DisplayGamerInfo(string playerName)
         {
-            Console.WriteLine($"Hello: {playerName}");
+            Console.WriteLine($"Hello {playerName}");
         }
 
         public static void DisplayCurrentTurnPlayer(string playerName)
         {
             Console.WriteLine($"Your turn: {playerName}");
         }
-        public static void DesignGameGrid(int[,] grid)
+        public static void DesignGameInterface(int[,] grid, string? playerName)
         {
+            Console.Clear();
+            DisplayGamerInfo(playerName);
+            DisplayCurrentTurnPlayer(playerName);
             string headers = RefreshInterface(grid);
             Console.Write(headers);
             Console.WriteLine();
-
-
         }
 
         public static string RefreshInterface(int[,] grid)
         {
-            Console.Clear();
+      
             string cell = "";
 
             for (int i = 0; i < grid.GetLength(0); i++)
             {
-
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
                     int value = grid[i, j];
@@ -64,26 +56,30 @@ namespace TicTacToe
                     {
                         cell += $"{value} ";
                     }
-
                 }
-
                 cell += "\n";
             }
-
-
-
             return cell;
         }
 
-        public static void DisplayWinner(string Winner) 
+        public static void DisplayFinalResult(int resultCode, int[,] grid, string winnerName = "") 
         {
             Console.Clear();
-            Console.WriteLine($"The winner is: {0}");
+            string resultText = string.Empty;
+            Console.WriteLine(RefreshInterface(grid));
 
-
+            if (resultCode == Constant.DRAFT_CODE)
+            {
+                resultText = "DRAFT_VALUE: No one won !";
+            }
+            else
+            {
+                resultText = $"WINNER: {winnerName}";
+            }
+        
+            Console.WriteLine(resultText);
         }
 
-        //NOTE FOR ALEX IS THIS CINSDERED LOGIC ?
         public static int[] PlayerPoistionChoice()
         {
             int[] playerChoice = new int[2];
@@ -97,8 +93,6 @@ namespace TicTacToe
             {
                 playerChoice[0] = convertedRow;
                 playerChoice[1] = convertedCol;
-
-
             }
             else
             {
@@ -116,12 +110,13 @@ namespace TicTacToe
 
         internal static bool Rematch()
         {
-            Console.WriteLine(Constant.REMATCH_TEXT);
+            Console.WriteLine($"Do you want a rematch ? {Constant.REMATCH_CHOICE_TEXT}");
             char k = Console.ReadKey().KeyChar;
 
             if (k == Constant.REMATCH_KEY_PRESSED) 
             {
                 Console.WriteLine("Restarting Game");
+                Console.Clear();
                 return true;
             }
             Console.ReadKey();
