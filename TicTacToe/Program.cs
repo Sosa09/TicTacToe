@@ -7,8 +7,6 @@ namespace TicTacToe
     /// </summary>
     public class Program
     {
-
-
         public static void Main(string[] args)
         {
             bool isPlayerTurn = new bool();
@@ -18,13 +16,12 @@ namespace TicTacToe
             int currentPlayerChar = 0;
             int[] currentPlayerMove = new int[2]; //2 corresponds to row and col move 1,1
             int playedGridsCount = 0;
-            bool isGameRunning = true;
 
             int[,] grid = GameLogic.InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
 
             InitGameSession(grid, ref playerName, ref isPlayerTurn);
 
-            while (isGameRunning)
+            while (true)
             {
                 DeterminePlayerTurn(grid, isPlayerTurn, playerName, ref currentPlayerName, ref currentPlayerChar, ref currentPlayerAction);
                 PlayerGamePlay(grid, currentPlayerChar, currentPlayerName, currentPlayerAction, ref currentPlayerMove);
@@ -38,27 +35,25 @@ namespace TicTacToe
                 if (GameLogic.IsWinner(grid, currentPlayerMove))
                 {
                     UIExperience.DisplayFinalResult(Constant.WIN_CODE, grid, currentPlayerName);
-                    isGameRunning = false;
+                    break;
 
                 }
                 else if (playedGridsCount == Constant.DRAFT_VALUE)
                 {
                     //Run if if draft
                     UIExperience.DisplayFinalResult(Constant.DRAFT_CODE, grid, "");
-                    isGameRunning = false;
+                    break;
 
-                }
-
-                //TODO: rematch
-                if (!isGameRunning)
-                {
-                    if (UIExperience.Rematch())
-                        Main(new string[0]);                    
                 }
 
                 isPlayerTurn = GameLogic.SwitchPlayerTurn(isPlayerTurn);
 
             }
+            
+            
+            if (UIExperience.Rematch())
+                Main(new string[0]);
+            
         }
 
         private static void InitGameSession(int[,] grid, ref string playerName, ref bool isPlayerTurn)
