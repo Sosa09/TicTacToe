@@ -13,11 +13,12 @@ namespace TicTacToe
             string playerName = string.Empty;
             string currentPlayerName = string.Empty;
             Func<int[]> currentPlayerAction = null;
-            int currentPlayerChar = 0;
-            int[] currentPlayerMove = new int[2]; //2 corresponds to row and col move 1,1
+            string currentPlayerChar = string.Empty;
+            int[] currentPlayerMove = new int[Constant.MAX_MOVES]; //2 corresponds to row and col move 1,1
             int playedGridsCount = 0;
+            int endGameCode = 0;
 
-            int[,] grid = GameLogic.InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
+            string[,] grid = GameLogic.InitGameGrid(Constant.TOTAL_GRID_ROW, Constant.TOTAL_GRID_COL);
 
             InitGameSession(grid, ref playerName, ref isPlayerTurn);
 
@@ -34,14 +35,15 @@ namespace TicTacToe
 
                 if (GameLogic.IsWinner(grid, currentPlayerMove))
                 {
-                    UIExperience.DisplayFinalResult(Constant.WIN_CODE, grid, currentPlayerName);
+                    endGameCode = Constant.WIN_CODE;
                     break;
 
                 }
                 else if (playedGridsCount == Constant.DRAFT_VALUE)
                 {
                     //Run if if draft
-                    UIExperience.DisplayFinalResult(Constant.DRAFT_CODE, grid, "");
+                    endGameCode = Constant.DRAFT_CODE;
+                    currentPlayerName = "";               
                     break;
 
                 }
@@ -49,16 +51,15 @@ namespace TicTacToe
                 isPlayerTurn = GameLogic.SwitchPlayerTurn(isPlayerTurn);
 
             }
-            
-            
+
+            UIExperience.DisplayFinalResult(endGameCode, grid, currentPlayerName); //currentPlayerName can be empty only if it is a draft
             if (UIExperience.Rematch())
                 Main(new string[0]);
             
         }
 
-        private static void InitGameSession(int[,] grid, ref string playerName, ref bool isPlayerTurn)
+        private static void InitGameSession(string[,] grid, ref string playerName, ref bool isPlayerTurn)
         {
-
             UIExperience.InitializeInterface(); //Will initialize all conmponents and resourcees necessary to strat the game
 
             playerName = Console.ReadLine();
@@ -67,26 +68,25 @@ namespace TicTacToe
 
             //Player can start over computer
             isPlayerTurn = true;
-
         }
 
-        private static void DeterminePlayerTurn(int[,] grid, bool isPlayerTurn, string playerName, ref string currentPlayerName, ref int currentPlayerChar, ref Func<int[]>? currentPlayerAction)
+        private static void DeterminePlayerTurn(string[,] grid, bool isPlayerTurn, string playerName, ref string currentPlayerName, ref string currentPlayerChar, ref Func<int[]>? currentPlayerAction)
         {
             if (isPlayerTurn)
             {
                 currentPlayerName = playerName;
-                currentPlayerChar = Constant.PLAYER_CHAR;
+                currentPlayerChar = Constant.PLAYER_CHAR.ToString();
                 currentPlayerAction = UIExperience.PlayerPoistionChoice;
             }
             else
             {
                 currentPlayerName = Constant.AI;
-                currentPlayerChar = Constant.AI_CHAR;
+                currentPlayerChar = Constant.AI_CHAR.ToString();
                 currentPlayerAction = GameLogic.AITurn;
             }
         }
 
-        private static void PlayerGamePlay(int[,] grid, int playerChar, string currentPlayer, Func<int[]> playerPoistionChoice, ref int[] currentPlayerMove)
+        private static void PlayerGamePlay(string[,] grid, string playerChar, string currentPlayer, Func<int[]> playerPoistionChoice, ref int[] currentPlayerMove)
         {
             currentPlayerMove = playerPoistionChoice();
             int playedRow = currentPlayerMove[0]; //0 represents the row 

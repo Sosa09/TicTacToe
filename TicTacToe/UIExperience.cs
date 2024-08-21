@@ -29,7 +29,7 @@ namespace TicTacToe
         {
             Console.WriteLine($"Your turn: {playerName}");
         }
-        public static void DesignGameInterface(int[,] grid, string? playerName)
+        public static void DesignGameInterface(string[,] grid, string? playerName)
         {
             Console.Clear();
             DisplayGamerInfo(playerName);
@@ -39,7 +39,7 @@ namespace TicTacToe
             Console.WriteLine();
         }
 
-        public static string RefreshInterface(int[,] grid)
+        public static string RefreshInterface(string[,] grid)
         {
       
             string cell = "";
@@ -48,7 +48,7 @@ namespace TicTacToe
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    int value = grid[i, j];
+                    string value = grid[i, j];
 
                     if (value == Constant.BOX_EMPTY_VALUE || i == 0 && j == 0) //i and j are the indexes while the indexes are 0 place a space to create a gapen between the row and header
                         cell += Constant.GAP + Constant.GAP;
@@ -62,7 +62,7 @@ namespace TicTacToe
             return cell;
         }
 
-        public static void DisplayFinalResult(int resultCode, int[,] grid, string winnerName = "") 
+        public static void DisplayFinalResult(int resultCode, string[,] grid, string winnerName = "") 
         {
             Console.Clear();
             string resultText = string.Empty;
@@ -110,7 +110,7 @@ namespace TicTacToe
 
         internal static bool Rematch()
         {
-            Console.WriteLine($"Do you want a rematch ? {Constant.REMATCH_CHOICE_TEXT}");
+            Console.WriteLine($"Do you want a rematch ? {Constant.REMATCH_OR_GAMEOVER}");
             char k = Console.ReadKey().KeyChar;
 
             if (k == Constant.REMATCH_KEY_PRESSED) 

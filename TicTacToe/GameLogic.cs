@@ -17,15 +17,15 @@ namespace TicTacToe
 
         }
 
-        private static bool IsHorizontalWinner(int[,] grid, int playedRow)
+        private static bool IsHorizontalWinner(string[,] grid, int playedRow)
         {
             bool isWinner = true;
 
-            int firstValue = grid[playedRow, Constant.FIRST_PLAYABLE_INDEX_GRID];
+            string firstValue = grid[playedRow, Constant.FIRST_PLAYABLE_INDEX_GRID];
             
             for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < Constant.TOTAL_GRID_COL; i++)
             {
-                int nextValue = grid[playedRow, i];
+                string nextValue = grid[playedRow, i];
 
                 if (nextValue == Constant.BOX_EMPTY_VALUE || nextValue != firstValue)
                 {
@@ -36,16 +36,16 @@ namespace TicTacToe
             return isWinner;        
         }
 
-        private static bool IsVerticalWinner(int[,] grid, int playedCol)
+        private static bool IsVerticalWinner(string[,] grid, int playedCol)
         {
 
             bool isWinner = true;
 
-            int firstValue = grid[Constant.FIRST_PLAYABLE_INDEX_GRID, playedCol];
+            string firstValue = grid[Constant.FIRST_PLAYABLE_INDEX_GRID, playedCol];
 
             for (int i = Constant.FIRST_PLAYABLE_INDEX_GRID; i < Constant.TOTAL_GRID_ROW; i++)
             {
-                int nextValue = grid[i,playedCol];
+                string nextValue = grid[i,playedCol];
 
                 if (nextValue == Constant.BOX_EMPTY_VALUE || nextValue != firstValue)
                 {
@@ -56,9 +56,9 @@ namespace TicTacToe
             return isWinner;
         }
     
-        public static bool IsDiagonalWinner(int[,] grid, int playedRow, int playedCol)
+        public static bool IsDiagonalWinner(string[,] grid, int playedRow, int playedCol)
         {
-            int value = grid[playedRow, playedCol];
+            string value = grid[playedRow, playedCol];
             int reverseIndex = grid.GetLength(0) - 1;
             bool isDiagWinner = true;   
             bool isDiagReverseWinner = true;
@@ -93,9 +93,9 @@ namespace TicTacToe
         /// _initGrid(4,4); 
         /// THE GRID 1 2 3 header rows and colunn rows
         /// </returns>
-        public static int[,] InitGameGrid(int rows, int cols)
+        public static string[,] InitGameGrid(int rows, int cols)
         {
-            int[,] grid = new int[rows, cols];
+            string[,] grid = new string[rows, cols];
 
             for (int i = 0; i < rows; i++)
             {
@@ -105,19 +105,19 @@ namespace TicTacToe
                     {
                         if (j == 0) //ignore first element of the array whcih is the upperleft int[0,0]  
                             continue;
-                        grid[i, j] = j;
+                        grid[i, j] = j.ToString();
                     }
                 }
                 else
                 {
-                    grid[i, 0] = i;
+                    grid[i, 0] = i.ToString();
                 }
             }
 
             return grid;
         }
 
-        public static bool IsWinner(int[,] grid, int[] currentPlayerMove)
+        public static bool IsWinner(string[,] grid, int[] currentPlayerMove)
         {
             int playedRow = currentPlayerMove[0];
             int playedCol = currentPlayerMove[1];
@@ -129,9 +129,9 @@ namespace TicTacToe
             return false;            
         }
 
-        public static bool CellIsNotEmpty(int[,] grid, int row, int col)
+        public static bool CellIsNotEmpty(string[,] grid, int row, int col)
         {
-            return grid[row, col] > 0;
+            return grid[row, col] != null;
         }
 
         public static bool SwitchPlayerTurn(bool isPlayerTurn)
@@ -139,7 +139,7 @@ namespace TicTacToe
             return !isPlayerTurn;
         }
 
-        public static void SetCharPosition(int[,] grid, int character, int playedRow, int playedCol)
+        public static void SetCharPosition(string[,] grid, string character, int playedRow, int playedCol)
         {
             grid[playedRow, playedCol] = character;
         }
