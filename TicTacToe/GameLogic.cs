@@ -136,7 +136,7 @@ namespace TicTacToe
 
         public static bool SwitchPlayerTurn(bool isPlayerTurn)
         {
-            return isPlayerTurn == false ? true : false;
+            return !isPlayerTurn;
         }
 
         public static void SetCharPosition(int[,] grid, int character, int playedRow, int playedCol)
