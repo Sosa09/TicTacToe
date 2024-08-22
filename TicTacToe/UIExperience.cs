@@ -39,7 +39,7 @@ namespace TicTacToe
             Console.WriteLine();
         }
 
-        public static string RefreshInterface(string[,] grid)
+        private static string RefreshInterface(string[,] grid)
         {
       
             string cell = "";

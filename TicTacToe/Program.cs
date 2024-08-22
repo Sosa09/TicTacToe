@@ -29,9 +29,6 @@ namespace TicTacToe
                 GameLogic.SetCharPosition(grid, currentPlayerChar, currentPlayerMove[0], currentPlayerMove[1]);
                 playedGridsCount++;
 
-                //design the base GRID
-                UIExperience.RefreshInterface(grid);
-
                 UIExperience.DesignGameInterface(grid, playerName); //initializing new game grid
 
                 if (GameLogic.IsWinner(grid, currentPlayerMove))
