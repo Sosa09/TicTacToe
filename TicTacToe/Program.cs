@@ -25,7 +25,8 @@ namespace TicTacToe
             while (true)
             {
                 DeterminePlayerTurn(isPlayerTurn, playerName, ref currentPlayerName, ref currentPlayerChar, ref currentPlayerAction);
-                PlayerGamePlay(grid, currentPlayerChar, currentPlayerAction, ref currentPlayerMove);
+                currentPlayerMove = GetValidPlayerPosition(grid, currentPlayerChar, currentPlayerAction);
+                GameLogic.SetCharPosition(grid, currentPlayerChar, currentPlayerMove[0], currentPlayerMove[1]);
                 playedGridsCount++;
 
                 //design the base GRID
@@ -86,9 +87,9 @@ namespace TicTacToe
             }
         }
 
-        private static void PlayerGamePlay(string[,] grid, string playerChar, Func<int[]> playerPoistionChoice, ref int[] currentPlayerMove)
+        private static int[] GetValidPlayerPosition(string[,] grid, string playerChar, Func<int[]> playerPostionChoice)
         {
-            currentPlayerMove = playerPoistionChoice();
+            int[] currentPlayerMove = playerPostionChoice();
             int playedRow = currentPlayerMove[0]; //0 represents the row 
             int playedCol = currentPlayerMove[1]; //1 represenets the col
 
@@ -101,14 +102,14 @@ namespace TicTacToe
                 {
                     UIExperience.DisplayCellNotEmptyMessage(playedRow, playedCol);
 
-                    currentPlayerMove = playerPoistionChoice();
+                    currentPlayerMove = playerPostionChoice();
                     playedRow = currentPlayerMove[0]; //0 represents the row 
                     playedCol = currentPlayerMove[1]; //1 represenets the col
                 }
 
             }
-
-            GameLogic.SetCharPosition(grid, playerChar, playedRow, playedCol);
+            return currentPlayerMove;
+            
         }
 
     }
