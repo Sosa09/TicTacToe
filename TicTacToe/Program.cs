@@ -24,8 +24,8 @@ namespace TicTacToe
 
             while (true)
             {
-                DeterminePlayerTurn(grid, isPlayerTurn, playerName, ref currentPlayerName, ref currentPlayerChar, ref currentPlayerAction);
-                PlayerGamePlay(grid, currentPlayerChar, currentPlayerName, currentPlayerAction, ref currentPlayerMove);
+                DeterminePlayerTurn(isPlayerTurn, playerName, ref currentPlayerName, ref currentPlayerChar, ref currentPlayerAction);
+                PlayerGamePlay(grid, currentPlayerChar, currentPlayerAction, ref currentPlayerMove);
                 playedGridsCount++;
 
                 //design the base GRID
@@ -70,7 +70,7 @@ namespace TicTacToe
             isPlayerTurn = true;
         }
 
-        private static void DeterminePlayerTurn(string[,] grid, bool isPlayerTurn, string playerName, ref string currentPlayerName, ref string currentPlayerChar, ref Func<int[]>? currentPlayerAction)
+        private static void DeterminePlayerTurn(bool isPlayerTurn, string playerName, ref string currentPlayerName, ref string currentPlayerChar, ref Func<int[]>? currentPlayerAction)
         {
             if (isPlayerTurn)
             {
@@ -86,7 +86,7 @@ namespace TicTacToe
             }
         }
 
-        private static void PlayerGamePlay(string[,] grid, string playerChar, string currentPlayer, Func<int[]> playerPoistionChoice, ref int[] currentPlayerMove)
+        private static void PlayerGamePlay(string[,] grid, string playerChar, Func<int[]> playerPoistionChoice, ref int[] currentPlayerMove)
         {
             currentPlayerMove = playerPoistionChoice();
             int playedRow = currentPlayerMove[0]; //0 represents the row 
